@@ -27,10 +27,10 @@ class DraftUUID(UUID):
         super().__init__(int=int)
 
 
-def _getrandbits(val: int) -> int:
+def _getrandbits(k: int) -> int:
     import random
 
-    return random.SystemRandom().getrandbits(val)
+    return random.SystemRandom().getrandbits(k)
 
 
 _last_v6_timestamp = None
@@ -58,9 +58,9 @@ def uuid6(clock_seq: int = None) -> UUID:
     time_high_and_time_mid = (timestamp >> 12) & 0xFFFFFFFFFFFF
     time_low_and_version = timestamp & 0x0FFF
     uuid_int = time_high_and_time_mid << 80
-    uuid_int += time_low_and_version << 64
-    uuid_int += (clock_seq & 0x3FFF) << 48
-    uuid_int += node
+    uuid_int |= time_low_and_version << 64
+    uuid_int |= (clock_seq & 0x3FFF) << 48
+    uuid_int |= node
     return DraftUUID(int=uuid_int, version=6)
 
 
@@ -83,10 +83,11 @@ def uuid7() -> UUID:
     timestamp_s, timestamp_ns = divmod(nanoseconds, 10 ** 9)
     subsec_a = timestamp_ns >> 18
     subsec_b = (timestamp_ns >> 6) & 0x0FFF
-    subsec_seq_node = (timestamp_ns & 0x3F) << 56
-    subsec_seq_node += _getrandbits(56)
+    subsec_c = timestamp_ns & 0x3F
+    rand = _getrandbits(56)
     uuid_int = (timestamp_s & 0x0FFFFFFFFF) << 92
-    uuid_int += subsec_a << 80
-    uuid_int += subsec_b << 64
-    uuid_int += subsec_seq_node
+    uuid_int |= subsec_a << 80
+    uuid_int |= subsec_b << 64
+    uuid_int |= subsec_c << 56
+    uuid_int |= rand
     return DraftUUID(int=uuid_int, version=7)
