@@ -10,7 +10,7 @@ from uuid import UUID
 class DraftUUID(UUID):
     r"""UUID draft version objects"""
 
-    def __init__(self, int: int, version: int = None):
+    def __init__(self, int: int, version: int = None) -> None:
         r"""Create a UUID from a single 128-bit integer as the 'int' argument."""
 
         if not 0 <= int < 1 << 128:
@@ -25,6 +25,30 @@ class DraftUUID(UUID):
             int &= ~(0xF000 << 64)
             int |= version << 76
         super().__init__(int=int)
+
+    @property
+    def subsec(self) -> int:
+        return (
+            (self.time_mid & 0x0FFF) << 18
+            | (self.time_hi_version & 0x0FFF) << 6
+            | self.clock_seq_hi_variant & 0x3F
+        )
+
+    @property
+    def time(self) -> int:
+        if self.version == 6:
+            return (
+                (self.time_low << 28)
+                | (self.time_mid << 12)
+                | (self.time_hi_version & 0x0FFF)
+            )
+        if self.version == 7:
+            return self.unixts * 10 ** 9 + self.subsec
+        return super().time
+
+    @property
+    def unixts(self) -> int:
+        return self.time_low << 4 | self.time_mid >> 12
 
 
 def _getrandbits(k: int) -> int:
