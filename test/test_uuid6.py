@@ -63,6 +63,25 @@ class DraftUUIDTests(unittest.TestCase):
             self.assertEqual(uuid6_1.fields[5], uuid6_2.fields[5])
             uuid6_1 = uuid6_2
 
+    @patch("uuid6._last_v7_timestamp", 1)
+    def test_uuid7_far_in_future(self):
+        year_in_ns = 3600 * 24 * 36525 * 10 ** 7
+        with patch("time.time_ns", return_value=10 * year_in_ns):
+            uuid_10y_from_epoch = uuid7()
+        with patch("time.time_ns", return_value=100 * year_in_ns):
+            uuid_100y_from_epoch = uuid7()
+        with patch("time.time_ns", return_value=1000 * year_in_ns):
+            uuid_1000y_from_epoch = uuid7()
+        with patch("time.time_ns", return_value=2170 * year_in_ns):
+            uuid_2170y_from_epoch = uuid7()
+        with patch("time.time_ns", return_value=2 ** 36 * 10 ** 9):
+            uuid_2pow36_from_epoch = uuid7()
+        self.assertLess(uuid_10y_from_epoch, uuid_100y_from_epoch)
+        self.assertLess(uuid_100y_from_epoch, uuid_1000y_from_epoch)
+        self.assertLess(uuid_1000y_from_epoch, uuid_2170y_from_epoch)
+        # Overflow after 2 ** 36 seconds
+        self.assertLess(uuid_2pow36_from_epoch, uuid_10y_from_epoch)
+
 
 if __name__ == "__main__":
     unittest.main()
