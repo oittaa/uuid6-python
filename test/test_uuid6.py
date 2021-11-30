@@ -1,8 +1,9 @@
 import unittest
+from time import time_ns
 from unittest.mock import patch
+from uuid import uuid1
 
 from uuid6 import DraftUUID, uuid6, uuid7
-
 
 YEAR_IN_NS = 3600 * 24 * 36525 * 10 ** 7
 
@@ -33,6 +34,7 @@ class DraftUUIDTests(unittest.TestCase):
     def test_valid_int(self):
         test_uuid = DraftUUID(int=0)
         self.assertEqual(test_uuid.version, None)
+        self.assertEqual(test_uuid.time, 0)
         test_uuid = DraftUUID(int=(1 << 128) - 1)
         self.assertEqual(test_uuid.version, None)
 
@@ -95,6 +97,14 @@ class DraftUUIDTests(unittest.TestCase):
         with patch("time.time_ns", return_value=2178 * YEAR_IN_NS):
             uuid_2178_from_epoch = uuid7()
         self.assertLess(uuid_2178_from_epoch, uuid_prev)
+
+    def test_time(self):
+        uuid_1 = uuid1()
+        uuid_6 = uuid6()
+        self.assertAlmostEqual(uuid_6.time / 10 ** 7, uuid_1.time / 10 ** 7, 3)
+        cur_time = time_ns()
+        uuid_7 = uuid7()
+        self.assertAlmostEqual(uuid_7.time / 10 ** 9, cur_time / 10 ** 9, 3)
 
 
 if __name__ == "__main__":
