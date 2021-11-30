@@ -52,9 +52,9 @@ class DraftUUID(UUID):
 
 
 def _getrandbits(k: int) -> int:
-    import random
+    import secrets
 
-    return random.SystemRandom().getrandbits(k)
+    return secrets.randbits(k)
 
 
 _last_v6_timestamp = None
