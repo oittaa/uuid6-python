@@ -91,5 +91,36 @@ assert my_uuid < uuid7()
 
 This implementation does not include a clock sequence counter as defined in the draft RFC.
 
+## Performance
+
+MacBook Air
+```
+Python 3.9.7 (default, Oct 12 2021, 22:38:23)
+[Clang 13.0.0 (clang-1300.0.29.3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import timeit
+>>> timeit.timeit('uuid1()', number=100000, setup="from uuid import uuid1")
+0.14462158300011652
+>>> timeit.timeit('uuid6()', number=100000, setup="from uuid6 import uuid6")
+0.2687861250000019
+>>> timeit.timeit('uuid7()', number=100000, setup="from uuid6 import uuid7")
+0.22819437500000106
+```
+
+Google [Cloud Shell][cloud shell] VM
+```
+Python 3.7.3 (default, Jan 22 2021, 20:04:44)
+[GCC 8.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import timeit
+>>> timeit.timeit('uuid1()', number=100000, setup="from uuid import uuid1")
+1.2075679750000745
+>>> timeit.timeit('uuid6()', number=100000, setup="from uuid6 import uuid6")
+0.6328954440000416
+>>> timeit.timeit('uuid7()', number=100000, setup="from uuid6 import uuid7")
+0.4709622599998511
+```
+
 [ietf draft]: https://github.com/uuid6/uuid6-ietf-draft
 [draft 02]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-02#section-4.4
+[cloud shell]: https://cloud.google.com/shell/docs
