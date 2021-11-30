@@ -101,10 +101,10 @@ class DraftUUIDTests(unittest.TestCase):
     def test_time(self):
         uuid_1 = uuid1()
         uuid_6 = uuid6()
-        self.assertAlmostEqual(uuid_6.time / 10**7, uuid_1.time / 10**7, 3)
+        self.assertAlmostEqual(uuid_6.time / 10 ** 7, uuid_1.time / 10 ** 7, 3)
         cur_time = time_ns()
         uuid_7 = uuid7()
-        self.assertAlmostEqual(uuid_7.time / 10**9, cur_time / 10**9, 3)
+        self.assertAlmostEqual(uuid_7.time / 10 ** 9, cur_time / 10 ** 9, 3)
 
 
 if __name__ == "__main__":
