@@ -4,6 +4,9 @@ from unittest.mock import patch
 from uuid6 import DraftUUID, uuid6, uuid7
 
 
+YEAR_IN_NS = 3600 * 24 * 36525 * 10 ** 7
+
+
 class DraftUUIDTests(unittest.TestCase):
     def test_uuid6_generation(self):
         uuid6_1 = uuid6()
@@ -63,24 +66,35 @@ class DraftUUIDTests(unittest.TestCase):
             self.assertEqual(uuid6_1.fields[5], uuid6_2.fields[5])
             uuid6_1 = uuid6_2
 
+    @patch("uuid6._last_v6_timestamp", 1)
+    def test_uuid6_far_in_future(self):
+        with patch("time.time_ns", return_value=1):
+            uuid_prev = uuid6()
+        for i in range(1, 3260):
+            with patch("time.time_ns", return_value=i * YEAR_IN_NS):
+                uuid_cur = uuid6()
+                self.assertLess(uuid_prev, uuid_cur)
+                uuid_prev = uuid_cur
+
+        # Overflow
+        with patch("time.time_ns", return_value=3270 * YEAR_IN_NS):
+            uuid_3270y_from_epoch = uuid6()
+        self.assertLess(uuid_3270y_from_epoch, uuid_prev)
+
     @patch("uuid6._last_v7_timestamp", 1)
     def test_uuid7_far_in_future(self):
-        year_in_ns = 3600 * 24 * 36525 * 10 ** 7
-        with patch("time.time_ns", return_value=10 * year_in_ns):
-            uuid_10y_from_epoch = uuid7()
-        with patch("time.time_ns", return_value=100 * year_in_ns):
-            uuid_100y_from_epoch = uuid7()
-        with patch("time.time_ns", return_value=1000 * year_in_ns):
-            uuid_1000y_from_epoch = uuid7()
-        with patch("time.time_ns", return_value=2170 * year_in_ns):
-            uuid_2170y_from_epoch = uuid7()
-        with patch("time.time_ns", return_value=2 ** 36 * 10 ** 9):
-            uuid_2pow36_from_epoch = uuid7()
-        self.assertLess(uuid_10y_from_epoch, uuid_100y_from_epoch)
-        self.assertLess(uuid_100y_from_epoch, uuid_1000y_from_epoch)
-        self.assertLess(uuid_1000y_from_epoch, uuid_2170y_from_epoch)
+        with patch("time.time_ns", return_value=1):
+            uuid_prev = uuid7()
+        for i in range(1, 2170):
+            with patch("time.time_ns", return_value=i * YEAR_IN_NS):
+                uuid_cur = uuid7()
+                self.assertLess(uuid_prev, uuid_cur)
+                uuid_prev = uuid_cur
+
         # Overflow after 2 ** 36 seconds
-        self.assertLess(uuid_2pow36_from_epoch, uuid_10y_from_epoch)
+        with patch("time.time_ns", return_value=2178 * YEAR_IN_NS):
+            uuid_2178_from_epoch = uuid7()
+        self.assertLess(uuid_2178_from_epoch, uuid_prev)
 
 
 if __name__ == "__main__":
