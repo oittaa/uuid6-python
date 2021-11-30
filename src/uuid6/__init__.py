@@ -80,13 +80,12 @@ def uuid7() -> UUID:
     if _last_v7_timestamp is not None and nanoseconds <= _last_v7_timestamp:
         nanoseconds = _last_v7_timestamp + 1
     _last_v7_timestamp = nanoseconds
-    timestamp_s = nanoseconds // 10 ** 9
-    timestamp_ns = nanoseconds - 10 ** 9 * timestamp_s
+    timestamp_s, timestamp_ns = divmod(nanoseconds, 10 ** 9)
     subsec_a = timestamp_ns >> 18
     subsec_b = (timestamp_ns >> 6) & 0x0FFF
     subsec_seq_node = (timestamp_ns & 0x3F) << 56
     subsec_seq_node += _getrandbits(56)
-    uuid_int = (timestamp_s & 0xFFFFFFFF) << 92
+    uuid_int = (timestamp_s & 0x0FFFFFFFFF) << 92
     uuid_int += subsec_a << 80
     uuid_int += subsec_b << 64
     uuid_int += subsec_seq_node
