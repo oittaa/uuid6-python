@@ -51,3 +51,7 @@ jobs:
         if: matrix.python-version == '3.10'
         with:
           flags: unittests
+      - name: Benchmark
+        run: |
+          pip install pyperf
+          ./bench.sh
