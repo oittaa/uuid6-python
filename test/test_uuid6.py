@@ -46,10 +46,9 @@ class DraftUUIDTests(unittest.TestCase):
     @patch("time.time_ns", return_value=1234)
     def test_uuid7_same_nanosecond(self, mocktime):
         uuid7_1 = uuid7()
-        for _ in range(10):
+        for _ in range(1000):
             uuid7_2 = uuid7()
             self.assertLess(uuid7_1, uuid7_2)
-            self.assertEqual(uuid7_1.int >> 56, (uuid7_2.int >> 56) - 1)
             uuid7_1 = uuid7_2
 
     @patch("uuid6._last_v6_timestamp", 1)

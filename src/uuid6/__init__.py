@@ -4,6 +4,9 @@ generating version 6 and 7 UUIDs as specified in
 https://github.com/uuid6/uuid6-ietf-draft.
 """
 
+import math
+import secrets
+import time
 from uuid import UUID
 
 
@@ -43,7 +46,7 @@ class DraftUUID(UUID):
                 | (self.time_hi_version & 0x0FFF)
             )
         if self.version == 7:
-            return self.unixts * 10 ** 9 + self.subsec
+            return self.unixts * 10 ** 9 + _subsec_decode(self.subsec)
         return super().time
 
     @property
@@ -52,9 +55,15 @@ class DraftUUID(UUID):
 
 
 def _getrandbits(k: int) -> int:
-    import secrets
-
     return secrets.randbits(k)
+
+
+def _subsec_decode(value: int) -> int:
+    return math.ceil(value * 10 ** 9 / 2 ** 30)
+
+
+def _subsec_encode(value: int) -> int:
+    return value * 2 ** 30 // 10 ** 9
 
 
 _last_v6_timestamp = None
@@ -67,7 +76,6 @@ def uuid6(clock_seq: int = None) -> UUID:
     otherwise a random 14-bit sequence number is chosen."""
 
     global _last_v6_timestamp
-    import time
 
     nanoseconds = time.time_ns()
     # 0x01b21dd213814000 is the number of 100-ns intervals between the
@@ -98,16 +106,16 @@ def uuid7() -> UUID:
     used during encoding in order to function correctly."""
 
     global _last_v7_timestamp
-    import time
 
     nanoseconds = time.time_ns()
     if _last_v7_timestamp is not None and nanoseconds <= _last_v7_timestamp:
         nanoseconds = _last_v7_timestamp + 1
     _last_v7_timestamp = nanoseconds
     timestamp_s, timestamp_ns = divmod(nanoseconds, 10 ** 9)
-    subsec_a = timestamp_ns >> 18
-    subsec_b = (timestamp_ns >> 6) & 0x0FFF
-    subsec_c = timestamp_ns & 0x3F
+    subsec = _subsec_encode(timestamp_ns)
+    subsec_a = subsec >> 18
+    subsec_b = (subsec >> 6) & 0x0FFF
+    subsec_c = subsec & 0x3F
     rand = _getrandbits(56)
     uuid_int = (timestamp_s & 0x0FFFFFFFFF) << 92
     uuid_int |= subsec_a << 80
