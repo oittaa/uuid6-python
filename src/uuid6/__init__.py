@@ -4,7 +4,6 @@ generating version 6 and 7 UUIDs as specified in
 https://github.com/uuid6/uuid6-ietf-draft.
 """
 
-import math
 import secrets
 import time
 from uuid import UUID
@@ -55,7 +54,7 @@ class DraftUUID(UUID):
 
 
 def _subsec_decode(value: int) -> int:
-    return math.ceil(value * 10 ** 9 / 2 ** 30)
+    return -(-value * 10 ** 9 // 2 ** 30)
 
 
 def _subsec_encode(value: int) -> int:
