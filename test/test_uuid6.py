@@ -52,7 +52,7 @@ class DraftUUIDTests(unittest.TestCase):
             uuid7_1 = uuid7_2
 
     @patch("uuid6._last_v6_timestamp", 1)
-    @patch("uuid6._getrandbits", return_value=678)
+    @patch("secrets.randbits", return_value=678)
     @patch("time.time_ns", return_value=12345)
     def test_uuid6_fields_without_randomness(self, mocktime, mockrand):
         uuid6_1 = uuid6(clock_seq=123)

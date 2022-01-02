@@ -54,10 +54,6 @@ class DraftUUID(UUID):
         return self.time_low << 4 | self.time_mid >> 12
 
 
-def _getrandbits(k: int) -> int:
-    return secrets.randbits(k)
-
-
 def _subsec_decode(value: int) -> int:
     return math.ceil(value * 10 ** 9 / 2 ** 30)
 
@@ -85,8 +81,8 @@ def uuid6(clock_seq: int = None) -> UUID:
         timestamp = _last_v6_timestamp + 1
     _last_v6_timestamp = timestamp
     if clock_seq is None:
-        clock_seq = _getrandbits(14)  # instead of stable storage
-    node = _getrandbits(48)
+        clock_seq = secrets.randbits(14)  # instead of stable storage
+    node = secrets.randbits(48)
     time_high_and_time_mid = (timestamp >> 12) & 0xFFFFFFFFFFFF
     time_low_and_version = timestamp & 0x0FFF
     uuid_int = time_high_and_time_mid << 80
@@ -116,7 +112,7 @@ def uuid7() -> UUID:
     subsec_a = subsec >> 18
     subsec_b = (subsec >> 6) & 0x0FFF
     subsec_c = subsec & 0x3F
-    rand = _getrandbits(56)
+    rand = secrets.randbits(56)
     uuid_int = (timestamp_s & 0x0FFFFFFFFF) << 92
     uuid_int |= subsec_a << 80
     uuid_int |= subsec_b << 64
