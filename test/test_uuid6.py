@@ -105,6 +105,14 @@ class DraftUUIDTests(unittest.TestCase):
         uuid_7 = uuid7()
         self.assertAlmostEqual(uuid_7.time / 10 ** 9, cur_time / 10 ** 9, 3)
 
+    def test_uuid7_from_hex(self):
+        uuid_7 = DraftUUID(hex="061d0edc-bea0-75cc-9892-f6295fd7d295")
+        self.assertEqual(uuid_7.time, 1641082315914150976)
+
+    def test_multiple_arguments(self):
+        with self.assertRaises(TypeError):
+            _ = DraftUUID(int=0, hex="061d0edc-bea0-75cc-9892-f6295fd7d295")
+
 
 if __name__ == "__main__":
     unittest.main()
