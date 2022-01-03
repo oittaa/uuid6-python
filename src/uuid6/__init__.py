@@ -26,7 +26,7 @@ class DraftUUID(UUID):
     ) -> None:
         r"""Create a UUID."""
 
-        if [hex, bytes, bytes_le, fields].count(None) != 4:
+        if int is None or [hex, bytes, bytes_le, fields].count(None) != 4:
             return super().__init__(
                 hex=hex,
                 bytes=bytes,
