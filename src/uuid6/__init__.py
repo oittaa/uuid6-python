@@ -26,17 +26,13 @@ class DraftUUID(UUID):
     ) -> None:
         r"""Create a UUID."""
 
-        if [hex, bytes, bytes_le, fields, int].count(None) != 4:
-            raise TypeError(
-                "one of the hex, bytes, bytes_le, fields, "
-                "or int arguments must be given"
-            )
-        if int is None:
+        if [hex, bytes, bytes_le, fields].count(None) != 4:
             return super().__init__(
                 hex=hex,
                 bytes=bytes,
                 bytes_le=bytes_le,
                 fields=fields,
+                int=int,
                 version=version,
                 is_safe=is_safe,
             )
