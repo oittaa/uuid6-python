@@ -6,15 +6,40 @@ https://github.com/uuid6/uuid6-ietf-draft.
 
 import secrets
 import time
-from uuid import UUID
+from typing import Tuple
+from uuid import UUID, SafeUUID
 
 
 class DraftUUID(UUID):
     r"""UUID draft version objects"""
 
-    def __init__(self, int: int, version: int = None) -> None:
-        r"""Create a UUID from a single 128-bit integer as the 'int' argument."""
+    def __init__(
+        self,
+        hex: str = None,
+        bytes: bytes = None,
+        bytes_le: bytes = None,
+        fields: Tuple[int, int, int, int, int, int] = None,
+        int: int = None,
+        version: int = None,
+        *,
+        is_safe=SafeUUID.unknown
+    ) -> None:
+        r"""Create a UUID."""
 
+        if [hex, bytes, bytes_le, fields, int].count(None) != 4:
+            raise TypeError(
+                "one of the hex, bytes, bytes_le, fields, "
+                "or int arguments must be given"
+            )
+        if int is None:
+            return super().__init__(
+                hex=hex,
+                bytes=bytes,
+                bytes_le=bytes_le,
+                fields=fields,
+                version=version,
+                is_safe=is_safe,
+            )
         if not 0 <= int < 1 << 128:
             raise ValueError("int is out of range (need a 128-bit value)")
         if version is not None:
@@ -26,7 +51,7 @@ class DraftUUID(UUID):
             # Set the version number.
             int &= ~(0xF000 << 64)
             int |= version << 76
-        super().__init__(int=int)
+        super().__init__(int=int, is_safe=is_safe)
 
     @property
     def subsec(self) -> int:

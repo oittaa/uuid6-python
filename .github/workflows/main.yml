@@ -46,12 +46,10 @@ jobs:
           coverage run -m unittest discover
           coverage report -m
           coverage xml
+      - name: Benchmark
+        run: ./bench.sh
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2.1.0
         if: matrix.python-version == '3.10'
         with:
           flags: unittests
-      - name: Benchmark
-        run: |
-          pip install pyperf
-          ./bench.sh
