@@ -132,7 +132,9 @@ def uuid7() -> UUID:
     subsec_a = subsec >> 18
     subsec_b = (subsec >> 6) & 0x0FFF
     subsec_c = subsec & 0x3F
-    rand = secrets.randbits(56)
+    rand = 0
+    while rand == 0:
+        rand = secrets.randbits(56)
     uuid_int = (timestamp_s & 0x0FFFFFFFFF) << 92
     uuid_int |= subsec_a << 80
     uuid_int |= subsec_b << 64
