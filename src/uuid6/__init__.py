@@ -66,7 +66,7 @@ class DraftUUID(UUID):
                 | (self.time_hi_version & 0x0FFF)
             )
         if self.version == 7:
-            return self.unixts * 10 ** 9 + _subsec_decode(self.subsec)
+            return self.unixts * 10**9 + _subsec_decode(self.subsec)
         return super().time
 
     @property
@@ -75,11 +75,11 @@ class DraftUUID(UUID):
 
 
 def _subsec_decode(value: int) -> int:
-    return -(-value * 10 ** 9 // 2 ** 30)
+    return -(-value * 10**9 // 2**30)
 
 
 def _subsec_encode(value: int) -> int:
-    return value * 2 ** 30 // 10 ** 9
+    return value * 2**30 // 10**9
 
 
 _last_v6_timestamp = None
@@ -127,14 +127,12 @@ def uuid7() -> UUID:
     if _last_v7_timestamp is not None and nanoseconds <= _last_v7_timestamp:
         nanoseconds = _last_v7_timestamp + 1
     _last_v7_timestamp = nanoseconds
-    timestamp_s, timestamp_ns = divmod(nanoseconds, 10 ** 9)
+    timestamp_s, timestamp_ns = divmod(nanoseconds, 10**9)
     subsec = _subsec_encode(timestamp_ns)
     subsec_a = subsec >> 18
     subsec_b = (subsec >> 6) & 0x0FFF
     subsec_c = subsec & 0x3F
-    rand = 0
-    while rand == 0:
-        rand = secrets.randbits(56)
+    rand = secrets.randbits(56)
     uuid_int = (timestamp_s & 0x0FFFFFFFFF) << 92
     uuid_int |= subsec_a << 80
     uuid_int |= subsec_b << 64

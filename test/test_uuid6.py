@@ -1,11 +1,12 @@
 import unittest
+from datetime import datetime
 from time import time_ns
 from unittest.mock import patch
 from uuid import uuid1
 
 from uuid6 import DraftUUID, uuid6, uuid7
 
-YEAR_IN_NS = 3600 * 24 * 36525 * 10 ** 7
+YEAR_IN_NS = 3600 * 24 * 36525 * 10**7
 
 
 class DraftUUIDTests(unittest.TestCase):
@@ -100,10 +101,24 @@ class DraftUUIDTests(unittest.TestCase):
     def test_time(self):
         uuid_1 = uuid1()
         uuid_6 = uuid6()
-        self.assertAlmostEqual(uuid_6.time / 10 ** 7, uuid_1.time / 10 ** 7, 3)
+        self.assertAlmostEqual(uuid_6.time / 10**7, uuid_1.time / 10**7, 3)
         cur_time = time_ns()
         uuid_7 = uuid7()
-        self.assertAlmostEqual(uuid_7.time / 10 ** 9, cur_time / 10 ** 9, 3)
+        self.assertAlmostEqual(uuid_7.time / 10**9, cur_time / 10**9, 3)
+
+    def test_time_zero(self):
+        uuid_6 = DraftUUID(hex="00000000-0000-6000-8000-000000000000")
+        self.assertEqual(uuid_6.time, 0)
+        uuid_7 = DraftUUID(hex="00000000-0000-7000-8000-000000000000")
+        self.assertEqual(uuid_7.time, 0)
+
+    def test_time_max(self):
+        uuid_6 = DraftUUID(hex="ffffffff-ffff-6fff-bfff-ffffffffffff")
+        self.assertEqual(uuid_6.time, 1152921504606846975)
+        uuid_7 = DraftUUID(hex="ffffffff-ffff-7fff-bfff-ffffffffffff")
+        self.assertEqual(uuid_7.time, 68719476736000000000)
+        dt = datetime.utcfromtimestamp(uuid_7.time / 10**9)
+        self.assertEqual(dt, datetime(4147, 8, 20, 7, 32, 16))
 
     def test_uuid7_from_hex(self):
         uuid_7 = DraftUUID(hex="061d0edc-bea0-75cc-9892-f6295fd7d295")
