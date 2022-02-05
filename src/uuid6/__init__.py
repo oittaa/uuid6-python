@@ -6,11 +6,11 @@ https://github.com/uuid6/uuid6-ietf-draft.
 
 import secrets
 import time
+import uuid
 from typing import Tuple
-from uuid import UUID, SafeUUID
 
 
-class DraftUUID(UUID):
+class UUID(uuid.UUID):
     r"""UUID draft version objects"""
 
     def __init__(
@@ -22,7 +22,7 @@ class DraftUUID(UUID):
         int: int = None,
         version: int = None,
         *,
-        is_safe=SafeUUID.unknown
+        is_safe=uuid.SafeUUID.unknown
     ) -> None:
         r"""Create a UUID."""
 
@@ -109,7 +109,7 @@ def uuid6(clock_seq: int = None) -> UUID:
     uuid_int |= time_low_and_version << 64
     uuid_int |= (clock_seq & 0x3FFF) << 48
     uuid_int |= node
-    return DraftUUID(int=uuid_int, version=6)
+    return UUID(int=uuid_int, version=6)
 
 
 def uuid7() -> UUID:
@@ -138,4 +138,4 @@ def uuid7() -> UUID:
     uuid_int |= subsec_b << 64
     uuid_int |= subsec_c << 56
     uuid_int |= rand
-    return DraftUUID(int=uuid_int, version=7)
+    return UUID(int=uuid_int, version=7)
