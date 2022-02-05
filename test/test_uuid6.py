@@ -6,6 +6,8 @@ from uuid import uuid1
 
 from uuid6 import UUID, uuid6, uuid7
 
+REGEX_UUID6 = r"^[0-9a-f]{8}-[0-9a-f]{4}-6[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+REGEX_UUID7 = r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
 YEAR_IN_NS = 3600 * 24 * 36525 * 10**7
 
 
@@ -14,6 +16,7 @@ class UUIDTests(unittest.TestCase):
         uuid6_1 = uuid6()
         self.assertEqual(uuid6_1.version, 6)
         for _ in range(1000):
+            self.assertRegex(str(uuid6_1), REGEX_UUID6)
             uuid6_2 = uuid6()
             self.assertLess(uuid6_1, uuid6_2)
             uuid6_1 = uuid6_2
@@ -22,6 +25,7 @@ class UUIDTests(unittest.TestCase):
         uuid7_1 = uuid7()
         self.assertEqual(uuid7_1.version, 7)
         for _ in range(1000):
+            self.assertRegex(str(uuid7_1), REGEX_UUID7)
             uuid7_2 = uuid7()
             self.assertLess(uuid7_1, uuid7_2)
             uuid7_1 = uuid7_2
