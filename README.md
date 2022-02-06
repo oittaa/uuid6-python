@@ -93,9 +93,11 @@ This implementation does not include a clock sequence counter as defined in the 
 
 ## Performance
 
-Run the included shell script `./bench.sh` to test on your own machine.
+Run the shell script [bench.sh][bench] to test on your own machine.
 
-MacBook Air
+### Results
+
+MacBook Air 2020
 ```
 Python 3.10.2
 Mean +- std dev: 1.02 us +- 0.01 us
@@ -126,3 +128,4 @@ Mean +- std dev: 7.51 us +- 1.42 us
 [ietf draft]: https://github.com/uuid6/uuid6-ietf-draft
 [draft 02]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-02#section-4.4
 [cloud shell]: https://cloud.google.com/shell/docs
+[bench]: https://github.com/oittaa/uuid6-python/blob/main/bench.sh
