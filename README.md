@@ -93,32 +93,34 @@ This implementation does not include a clock sequence counter as defined in the 
 
 ## Performance
 
+Run the included shell script `./bench.sh` to test on your own machine.
+
 MacBook Air
 ```
-Python 3.9.7 (default, Oct 12 2021, 22:38:23)
-[Clang 13.0.0 (clang-1300.0.29.3)] on darwin
-Type "help", "copyright", "credits" or "license" for more information.
->>> import timeit
->>> timeit.timeit('uuid1()', number=100000, setup="from uuid import uuid1")
-0.14462158300011652
->>> timeit.timeit('uuid6()', number=100000, setup="from uuid6 import uuid6")
-0.2687861250000019
->>> timeit.timeit('uuid7()', number=100000, setup="from uuid6 import uuid7")
-0.22819437500000106
+Python 3.10.2
+Mean +- std dev: 1.02 us +- 0.01 us
+Mean +- std dev: 1.11 us +- 0.01 us
+Mean +- std dev: 2.34 us +- 0.02 us
+Mean +- std dev: 2.04 us +- 0.02 us
++-----------+---------+-----------------------+-----------------------+-----------------------+
+| Benchmark | uuid1   | uuid4                 | uuid6                 | uuid7                 |
++===========+=========+=======================+=======================+=======================+
+| timeit    | 1.02 us | 1.11 us: 1.08x slower | 2.34 us: 2.28x slower | 2.04 us: 1.99x slower |
++-----------+---------+-----------------------+-----------------------+-----------------------+
 ```
 
 Google [Cloud Shell][cloud shell] VM
 ```
-Python 3.7.3 (default, Jan 22 2021, 20:04:44)
-[GCC 8.3.0] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> import timeit
->>> timeit.timeit('uuid1()', number=100000, setup="from uuid import uuid1")
-1.2075679750000745
->>> timeit.timeit('uuid6()', number=100000, setup="from uuid6 import uuid6")
-0.6328954440000416
->>> timeit.timeit('uuid7()', number=100000, setup="from uuid6 import uuid7")
-0.4709622599998511
+Python 3.7.3
+Mean +- std dev: 10.1 us +- 0.7 us
+Mean +- std dev: 4.25 us +- 0.79 us
+Mean +- std dev: 9.37 us +- 1.75 us
+Mean +- std dev: 7.51 us +- 1.42 us
++-----------+---------+-----------------------+-----------------------+-----------------------+
+| Benchmark | uuid1   | uuid4                 | uuid6                 | uuid7                 |
++===========+=========+=======================+=======================+=======================+
+| timeit    | 10.1 us | 4.25 us: 2.38x faster | 9.37 us: 1.08x faster | 7.51 us: 1.35x faster |
++-----------+---------+-----------------------+-----------------------+-----------------------+
 ```
 
 [ietf draft]: https://github.com/uuid6/uuid6-ietf-draft
