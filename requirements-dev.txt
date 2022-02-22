@@ -1,4 +1,4 @@
-coverage[toml]==6.3.1
+coverage[toml]==6.3.2
 flake8==4.0.1
 mypy==0.931
 pyperf==2.3.1
