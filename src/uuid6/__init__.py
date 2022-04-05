@@ -51,11 +51,7 @@ class UUID(uuid.UUID):
 
     @property
     def subsec(self) -> int:
-        return (
-            (self.time_mid & 0x0FFF) << 18
-            | (self.time_hi_version & 0x0FFF) << 6
-            | self.clock_seq_hi_variant & 0x3F
-        )
+        return ((self.int >> 64) & 0x0FFF) << 8 | ((self.int >> 54) & 0xFF)
 
     @property
     def time(self) -> int:
@@ -66,20 +62,16 @@ class UUID(uuid.UUID):
                 | (self.time_hi_version & 0x0FFF)
             )
         if self.version == 7:
-            return self.unixts * 10**9 + _subsec_decode(self.subsec)
+            return (self.int >> 80) * 10**6 + _subsec_decode(self.subsec)
         return super().time
-
-    @property
-    def unixts(self) -> int:
-        return self.time_low << 4 | self.time_mid >> 12
 
 
 def _subsec_decode(value: int) -> int:
-    return -(-value * 10**9 // 2**30)
+    return -(-value * 10**6 // 2**20)
 
 
 def _subsec_encode(value: int) -> int:
-    return value * 2**30 // 10**9
+    return value * 2**20 // 10**6
 
 
 _last_v6_timestamp = None
@@ -127,15 +119,13 @@ def uuid7() -> UUID:
     if _last_v7_timestamp is not None and nanoseconds <= _last_v7_timestamp:
         nanoseconds = _last_v7_timestamp + 1
     _last_v7_timestamp = nanoseconds
-    timestamp_s, timestamp_ns = divmod(nanoseconds, 10**9)
+    timestamp_ms, timestamp_ns = divmod(nanoseconds, 10**6)
     subsec = _subsec_encode(timestamp_ns)
-    subsec_a = subsec >> 18
-    subsec_b = (subsec >> 6) & 0x0FFF
-    subsec_c = subsec & 0x3F
-    rand = secrets.randbits(56)
-    uuid_int = (timestamp_s & 0x0FFFFFFFFF) << 92
-    uuid_int |= subsec_a << 80
-    uuid_int |= subsec_b << 64
-    uuid_int |= subsec_c << 56
+    subsec_a = subsec >> 8
+    subsec_b = subsec & 0xFF
+    rand = secrets.randbits(54)
+    uuid_int = (timestamp_ms & 0xFFFFFFFFFFFF) << 80
+    uuid_int |= subsec_a << 64
+    uuid_int |= subsec_b << 54
     uuid_int |= rand
     return UUID(int=uuid_int, version=7)
