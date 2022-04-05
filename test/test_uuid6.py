@@ -1,5 +1,4 @@
 import unittest
-from datetime import datetime
 from time import time_ns
 from unittest.mock import patch
 from uuid import uuid1
@@ -91,16 +90,11 @@ class UUIDTests(unittest.TestCase):
     def test_uuid7_far_in_future(self):
         with patch("time.time_ns", return_value=1):
             uuid_prev = uuid7()
-        for i in range(1, 2170):
+        for i in range(1, 8000):
             with patch("time.time_ns", return_value=i * YEAR_IN_NS):
                 uuid_cur = uuid7()
                 self.assertLess(uuid_prev, uuid_cur)
                 uuid_prev = uuid_cur
-
-        # Overflow after 2 ** 36 seconds
-        with patch("time.time_ns", return_value=2178 * YEAR_IN_NS):
-            uuid_2178_from_epoch = uuid7()
-        self.assertLess(uuid_2178_from_epoch, uuid_prev)
 
     def test_time(self):
         uuid_1 = uuid1()
@@ -110,23 +104,27 @@ class UUIDTests(unittest.TestCase):
         uuid_7 = uuid7()
         self.assertAlmostEqual(uuid_7.time / 10**9, cur_time / 10**9, 3)
 
-    def test_time_zero(self):
+    def test_zero_time(self):
         uuid_6 = UUID(hex="00000000-0000-6000-8000-000000000000")
         self.assertEqual(uuid_6.time, 0)
         uuid_7 = UUID(hex="00000000-0000-7000-8000-000000000000")
         self.assertEqual(uuid_7.time, 0)
 
-    def test_time_max(self):
+    def test_max_time(self):
         uuid_6 = UUID(hex="ffffffff-ffff-6fff-bfff-ffffffffffff")
         self.assertEqual(uuid_6.time, 1152921504606846975)
         uuid_7 = UUID(hex="ffffffff-ffff-7fff-bfff-ffffffffffff")
-        self.assertEqual(uuid_7.time, 68719476736000000000)
-        dt = datetime.utcfromtimestamp(uuid_7.time / 10**9)
-        self.assertEqual(dt, datetime(4147, 8, 20, 7, 32, 16))
+        self.assertEqual(uuid_7.time, 281474976710656000000)
 
-    def test_uuid7_from_hex(self):
-        uuid_7 = UUID(hex="061d0edc-bea0-75cc-9892-f6295fd7d295")
-        self.assertEqual(uuid_7.time, 1641082315914150976)
+    def test_uuid6_test_vector(self):
+        uuid_6 = UUID(hex="1EC9414C-232A-6B00-B3C8-9E6BDECED846")
+        self.assertEqual(uuid_6.time, 138648505420000000)
+        uuid_1 = UUID(hex="C232AB00-9414-11EC-B3C8-9E6BDECED846")
+        self.assertEqual(uuid_6.time, uuid_1.time)
+
+    def test_uuid7_test_vector(self):
+        uuid_7 = UUID(hex="017F21CF-D130-7CC3-98C4-DC0C0C07398F")
+        self.assertEqual(uuid_7.time // 10**6, 1645539742000)
 
     def test_multiple_arguments(self):
         with self.assertRaises(TypeError):
