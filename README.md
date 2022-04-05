@@ -86,7 +86,7 @@ assert my_uuid < uuid7()
 - `subsec_b`: 8 bits allocated to sub-second precision values
 - `rand`: The remaining 54 bits are filled with pseudo-random data
 
- 20 extra bits dedicated to sub-second precision provide nanosecond resolution. The `unixts` and `subsec` fields guarantee the order of UUIDs generated within the same nanosecond by monotonically incrementing the timer.
+ 20 extra bits dedicated to sub-second precision provide nanosecond resolution. The `unix_ts` and `subsec` fields guarantee the order of UUIDs generated within the same nanosecond by monotonically incrementing the timer.
 
 ## Performance
 
