@@ -98,27 +98,27 @@ MacBook Air 2020
 ```
 Python 3.10.2
 Mean +- std dev: 1.02 us +- 0.01 us
-Mean +- std dev: 1.11 us +- 0.01 us
-Mean +- std dev: 2.34 us +- 0.02 us
-Mean +- std dev: 2.04 us +- 0.02 us
+Mean +- std dev: 1.13 us +- 0.02 us
+Mean +- std dev: 2.33 us +- 0.02 us
+Mean +- std dev: 1.91 us +- 0.02 us
 +-----------+---------+-----------------------+-----------------------+-----------------------+
 | Benchmark | uuid1   | uuid4                 | uuid6                 | uuid7                 |
 +===========+=========+=======================+=======================+=======================+
-| timeit    | 1.02 us | 1.11 us: 1.08x slower | 2.34 us: 2.28x slower | 2.04 us: 1.99x slower |
+| timeit    | 1.02 us | 1.13 us: 1.11x slower | 2.33 us: 2.29x slower | 1.91 us: 1.87x slower |
 +-----------+---------+-----------------------+-----------------------+-----------------------+
 ```
 
 Google [Cloud Shell][cloud shell] VM
 ```
-Python 3.7.3
-Mean +- std dev: 10.1 us +- 0.7 us
-Mean +- std dev: 4.25 us +- 0.79 us
-Mean +- std dev: 9.37 us +- 1.75 us
-Mean +- std dev: 7.51 us +- 1.42 us
+Python 3.9.2
+Mean +- std dev: 12.6 us +- 0.5 us
+Mean +- std dev: 3.06 us +- 0.14 us
+Mean +- std dev: 6.42 us +- 0.37 us
+Mean +- std dev: 4.94 us +- 0.24 us
 +-----------+---------+-----------------------+-----------------------+-----------------------+
 | Benchmark | uuid1   | uuid4                 | uuid6                 | uuid7                 |
 +===========+=========+=======================+=======================+=======================+
-| timeit    | 10.1 us | 4.25 us: 2.38x faster | 9.37 us: 1.08x faster | 7.51 us: 1.35x faster |
+| timeit    | 12.6 us | 3.06 us: 4.11x faster | 6.42 us: 1.95x faster | 4.94 us: 2.54x faster |
 +-----------+---------+-----------------------+-----------------------+-----------------------+
 ```
 
