@@ -75,7 +75,7 @@ class UUIDTests(unittest.TestCase):
     def test_uuid6_far_in_future(self):
         with patch("time.time_ns", return_value=1):
             uuid_prev = uuid6()
-        for i in range(1, 3260):
+        for i in range(1, 3260, 10):
             with patch("time.time_ns", return_value=i * YEAR_IN_NS):
                 uuid_cur = uuid6()
                 self.assertLess(uuid_prev, uuid_cur)
@@ -90,7 +90,7 @@ class UUIDTests(unittest.TestCase):
     def test_uuid7_far_in_future(self):
         with patch("time.time_ns", return_value=1):
             uuid_prev = uuid7()
-        for i in range(1, 8000):
+        for i in range(1, 8000, 10):
             with patch("time.time_ns", return_value=i * YEAR_IN_NS):
                 uuid_cur = uuid7()
                 self.assertLess(uuid_prev, uuid_cur)
@@ -115,16 +115,6 @@ class UUIDTests(unittest.TestCase):
         self.assertEqual(uuid_6.time, 1152921504606846975)
         uuid_7 = UUID(hex="ffffffff-ffff-7fff-bfff-ffffffffffff")
         self.assertEqual(uuid_7.time, 281474976710656000000)
-
-    def test_uuid6_test_vector(self):
-        uuid_6 = UUID(hex="1EC9414C-232A-6B00-B3C8-9E6BDECED846")
-        self.assertEqual(uuid_6.time, 138648505420000000)
-        uuid_1 = UUID(hex="C232AB00-9414-11EC-B3C8-9E6BDECED846")
-        self.assertEqual(uuid_6.time, uuid_1.time)
-
-    def test_uuid7_test_vector(self):
-        uuid_7 = UUID(hex="017F21CF-D130-7CC3-98C4-DC0C0C07398F")
-        self.assertEqual(uuid_7.time // 10**6, 1645539742000)
 
     def test_multiple_arguments(self):
         with self.assertRaises(TypeError):
