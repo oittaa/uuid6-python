@@ -52,6 +52,9 @@ setup(
         "wheel",
     ],
     package_dir={"": "src"},
+    package_data={
+        "": ["py.typed"],
+    },
     packages=find_packages(where="src"),
     python_requires=">=3.7",
 )
