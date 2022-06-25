@@ -29,8 +29,8 @@ class TestVectors(unittest.TestCase):
         self.assertEqual(uuid_6.time, uuid_1.time)
 
     def test_uuid7_time_from_hex(self):
-        uuid_7 = UUID(hex="017F21CF-D130-7CC3-98C4-DC0C0C07398F")
-        self.assertEqual(uuid_7.time // 10**6, 1645539742000)
+        uuid_7 = UUID(hex="017F22E2-79B0-7CC3-98C4-DC0C0C07398F")
+        self.assertEqual(uuid_7.time // 10**6, 1645557742000)
 
 
 if __name__ == "__main__":
