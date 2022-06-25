@@ -6,7 +6,7 @@ from uuid6 import UUID, uuid6, uuid7
 
 class TestVectors(unittest.TestCase):
     """
-    https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-03#appendix-B
+    https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#appendix-B
     """
 
     @patch("uuid6._last_v6_timestamp", 1)
@@ -17,10 +17,10 @@ class TestVectors(unittest.TestCase):
         self.assertEqual(str(uuid_6), "1ec9414c-232a-6b00-b3c8-9e6bdeced846")
 
     @patch("uuid6._last_v7_timestamp", 1)
-    @patch("time.time_ns", return_value=0x17F21CFD130 * 10**6)
+    @patch("time.time_ns", return_value=0x17F22E279B0 * 10**6)
     def test_uuid7_hex_from_time(self, mocktime):
         uuid_7 = uuid7()
-        self.assertEqual(str(uuid_7)[:15], "017f21cf-d130-7")
+        self.assertEqual(str(uuid_7)[:15], "017f22e2-79b0-7")
 
     def test_uuid6_time_from_hex(self):
         uuid_6 = UUID(hex="1EC9414C-232A-6B00-B3C8-9E6BDECED846")

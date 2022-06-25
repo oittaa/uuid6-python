@@ -7,7 +7,7 @@ New time-based UUID formats which are suited for use as a database key.
 [![Python versions supported](https://img.shields.io/pypi/pyversions/uuid6.svg?logo=python)](https://pypi.org/project/uuid6/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-This module extends immutable UUID objects (the UUID class) with the functions `uuid6()` and `uuid7()` from [the IETF draft][ietf draft].
+This module extends immutable UUID objects (the UUID class) with the functions `uuid6()` and `uuid7()` from [the IETF draft][draft repository].
 
 ## Install
 
@@ -47,7 +47,7 @@ assert my_uuid < uuid7()
 
 ## UUIDv7 Field and Bit Layout
 
-### [Draft 03][draft 03]
+### [Draft 04][draft 04]
 
 ```
         0                   1                   2                   3
@@ -122,7 +122,7 @@ Mean +- std dev: 4.94 us +- 0.24 us
 +-----------+---------+-----------------------+-----------------------+-----------------------+
 ```
 
-[ietf draft]: https://github.com/uuid6/uuid6-ietf-draft
-[draft 03]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-03#section-5.2
+[draft repository]: https://github.com/uuid6/uuid6-ietf-draft
+[draft 04]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.2
 [cloud shell]: https://cloud.google.com/shell/docs
 [bench]: https://github.com/oittaa/uuid6-python/blob/main/bench.sh
