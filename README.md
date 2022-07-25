@@ -84,7 +84,7 @@ assert my_uuid < uuid7()
 - `subsec_a`: 12 bits allocated to sub-second precision values
 - `var`: 2 bit UUID variant (10)
 - `subsec_b`: 8 bits allocated to sub-second precision values
-- `rand`: The remaining 54 bits are filled with pseudo-random data
+- `rand`: The remaining 54 bits are filled with [cryptographically strong random data][python randbits]
 
  20 extra bits dedicated to sub-second precision provide nanosecond resolution. The `unix_ts` and `subsec` fields guarantee the order of UUIDs generated within the same nanosecond by monotonically incrementing the timer.
 
@@ -125,4 +125,5 @@ Mean +- std dev: 4.94 us +- 0.24 us
 [draft repository]: https://github.com/uuid6/uuid6-ietf-draft
 [draft 04]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.2
 [cloud shell]: https://cloud.google.com/shell/docs
+[python randbits]: https://docs.python.org/3/library/secrets.html#secrets.randbits
 [bench]: https://github.com/oittaa/uuid6-python/blob/main/bench.sh
