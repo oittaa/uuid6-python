@@ -1,7 +1,7 @@
 r"""UUID draft version objects (universally unique identifiers).
-This module provides the functions uuid6() and uuid7() for
-generating version 6 and 7 UUIDs as specified in
-https://github.com/uuid6/uuid6-ietf-draft.
+This module provides the functions uuid6(), uuid7(), and uuid8() for
+generating version 6, 7, and 8 UUIDs as specified in
+https://github.com/ietf-wg-uuidrev/rfc4122bis
 """
 
 import secrets
