@@ -21,7 +21,6 @@ class TestVectors(unittest.TestCase):
     @patch("time.time_ns", return_value=0x17F22E279B0 * 10**6)
     def test_uuid7_hex_from_time(self, mocktime, mockrand):
         uuid_7 = uuid7()
-        #self.assertEqual(str(uuid_7)[:15], "017f22e2-79b0-7")
         self.assertEqual(str(uuid_7), "017f22e2-79b0-7cc3-98c4-dc0c0c07398f")
 
     def test_uuid6_time_from_hex(self):
