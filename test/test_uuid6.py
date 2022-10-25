@@ -3,10 +3,11 @@ from time import time_ns
 from unittest.mock import patch
 from uuid import uuid1
 
-from uuid6 import UUID, uuid6, uuid7
+from uuid6 import UUID, uuid6, uuid7, uuid8
 
 REGEX_UUID6 = r"^[0-9a-f]{8}-[0-9a-f]{4}-6[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
 REGEX_UUID7 = r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+REGEX_UUID8 = r"^[0-9a-f]{8}-[0-9a-f]{4}-8[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
 YEAR_IN_NS = 3600 * 24 * 36525 * 10**7
 
 
@@ -28,6 +29,15 @@ class UUIDTests(unittest.TestCase):
             uuid7_2 = uuid7()
             self.assertLess(uuid7_1, uuid7_2)
             uuid7_1 = uuid7_2
+
+    def test_uuid8_generation(self):
+        uuid8_1 = uuid8()
+        self.assertEqual(uuid8_1.version, 8)
+        for _ in range(1000):
+            self.assertRegex(str(uuid8_1), REGEX_UUID8)
+            uuid8_2 = uuid8()
+            self.assertLess(uuid8_1, uuid8_2)
+            uuid8_1 = uuid8_2
 
     def test_invalid_int(self):
         with self.assertRaises(ValueError):
@@ -54,6 +64,15 @@ class UUIDTests(unittest.TestCase):
             uuid7_2 = uuid7()
             self.assertLess(uuid7_1, uuid7_2)
             uuid7_1 = uuid7_2
+
+    @patch("uuid6._last_v8_timestamp", 1)
+    @patch("time.time_ns", return_value=1234)
+    def test_uuid8_same_nanosecond(self, mocktime):
+        uuid8_1 = uuid8()
+        for _ in range(1000):
+            uuid8_2 = uuid8()
+            self.assertLess(uuid8_1, uuid8_2)
+            uuid8_1 = uuid8_2
 
     @patch("uuid6._last_v6_timestamp", 1)
     @patch("secrets.randbits", return_value=678)
@@ -96,25 +115,41 @@ class UUIDTests(unittest.TestCase):
                 self.assertLess(uuid_prev, uuid_cur)
                 uuid_prev = uuid_cur
 
+    @patch("uuid6._last_v8_timestamp", 1)
+    def test_uuid8_far_in_future(self):
+        with patch("time.time_ns", return_value=1):
+            uuid_prev = uuid8()
+        for i in range(1, 8000, 10):
+            with patch("time.time_ns", return_value=i * YEAR_IN_NS):
+                uuid_cur = uuid8()
+                self.assertLess(uuid_prev, uuid_cur)
+                uuid_prev = uuid_cur
+
     def test_time(self):
         uuid_1 = uuid1()
         uuid_6 = uuid6()
         self.assertAlmostEqual(uuid_6.time / 10**7, uuid_1.time / 10**7, 3)
         cur_time = time_ns()
         uuid_7 = uuid7()
-        self.assertAlmostEqual(uuid_7.time / 10**9, cur_time / 10**9, 3)
+        self.assertAlmostEqual(uuid_7.time / 10**3, cur_time / 10**9, 2)
+        uuid_8 = uuid8()
+        self.assertAlmostEqual(uuid_8.time / 10**9, cur_time / 10**9, 3)
 
     def test_zero_time(self):
         uuid_6 = UUID(hex="00000000-0000-6000-8000-000000000000")
         self.assertEqual(uuid_6.time, 0)
         uuid_7 = UUID(hex="00000000-0000-7000-8000-000000000000")
         self.assertEqual(uuid_7.time, 0)
+        uuid_8 = UUID(hex="00000000-0000-8000-8000-000000000000")
+        self.assertEqual(uuid_8.time, 0)
 
     def test_max_time(self):
         uuid_6 = UUID(hex="ffffffff-ffff-6fff-bfff-ffffffffffff")
         self.assertEqual(uuid_6.time, 1152921504606846975)
         uuid_7 = UUID(hex="ffffffff-ffff-7fff-bfff-ffffffffffff")
-        self.assertEqual(uuid_7.time, 281474976710656000000)
+        self.assertEqual(uuid_7.time, 281474976710655)
+        uuid_8 = UUID(hex="ffffffff-ffff-8fff-bfff-ffffffffffff")
+        self.assertEqual(uuid_8.time, 281474976710656000000)
 
     def test_multiple_arguments(self):
         with self.assertRaises(TypeError):
