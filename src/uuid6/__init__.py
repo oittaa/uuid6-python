@@ -13,6 +13,8 @@ from typing import Tuple
 class UUID(uuid.UUID):
     r"""UUID draft version objects"""
 
+    __slots__ = ()
+
     def __init__(
         self,
         hex: str = None,
