@@ -125,7 +125,7 @@ def uuid7() -> UUID:
     global _last_v7_timestamp
 
     nanoseconds = time.time_ns()
-    timestamp_ms, _ = divmod(nanoseconds, 10**6)
+    timestamp_ms = nanoseconds // 10**6
     if _last_v7_timestamp is not None and timestamp_ms <= _last_v7_timestamp:
         timestamp_ms = _last_v7_timestamp + 1
     _last_v7_timestamp = timestamp_ms
