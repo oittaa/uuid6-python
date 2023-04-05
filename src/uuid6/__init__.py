@@ -7,7 +7,7 @@ https://github.com/ietf-wg-uuidrev/rfc4122bis
 import secrets
 import time
 import uuid
-from typing import Tuple
+from typing import Optional, Tuple
 
 
 class UUID(uuid.UUID):
@@ -17,12 +17,12 @@ class UUID(uuid.UUID):
 
     def __init__(
         self,
-        hex: str = None,
-        bytes: bytes = None,
-        bytes_le: bytes = None,
-        fields: Tuple[int, int, int, int, int, int] = None,
-        int: int = None,
-        version: int = None,
+        hex: Optional[str] = None,
+        bytes: Optional[bytes] = None,
+        bytes_le: Optional[bytes] = None,
+        fields: Optional[Tuple[int, int, int, int, int, int]] = None,
+        int: Optional[int] = None,
+        version: Optional[int] = None,
         *,
         is_safe=uuid.SafeUUID.unknown
     ) -> None:
@@ -83,7 +83,7 @@ _last_v7_timestamp = None
 _last_v8_timestamp = None
 
 
-def uuid6(clock_seq: int = None) -> UUID:
+def uuid6(clock_seq: Optional[int] = None) -> UUID:
     r"""UUID version 6 is a field-compatible version of UUIDv1, reordered for
     improved DB locality. It is expected that UUIDv6 will primarily be
     used in contexts where there are existing v1 UUIDs. Systems that do
