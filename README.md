@@ -39,7 +39,7 @@ assert my_uuid < uuid8()
 
 UUID version 7 features a time-ordered value field derived from the widely implemented and well known Unix Epoch timestamp source, the number of milliseconds seconds since midnight 1 Jan 1970 UTC, leap seconds excluded. As well as improved entropy characteristics over versions 1 or 6.
 
-If your use case requires greater granularity than UUID vesion 7 can provide, you might consider UUID version 8. UUID version 8 doesn't provide as good entropy characteristics as UUID version 7, but it utilizes timestamp with nanosecond level of precision.
+If your use case requires greater granularity than UUID version 7 can provide, you might consider UUID version 8. UUID version 8 doesn't provide as good entropy characteristics as UUID version 7, but it utilizes timestamp with nanosecond level of precision.
 
 ## UUIDv6 Field and Bit Layout
 
