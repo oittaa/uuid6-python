@@ -24,7 +24,7 @@ class UUID(uuid.UUID):
         int: Optional[int] = None,
         version: Optional[int] = None,
         *,
-        is_safe=uuid.SafeUUID.unknown
+        is_safe: uuid.SafeUUID = uuid.SafeUUID.unknown
     ) -> None:
         r"""Create a UUID."""
 
@@ -115,9 +115,9 @@ def uuid6(clock_seq: Optional[int] = None) -> UUID:
 def uuid7() -> UUID:
     r"""UUID version 7 features a time-ordered value field derived from the
     widely implemented and well known Unix Epoch timestamp source, the
-    number of milliseconds seconds since midnight 1 Jan 1970 UTC, leap
-    seconds excluded. As well as improved entropy characteristics over
-    versions 1 or 6.
+    number of milliseconds since midnight 1 Jan 1970 UTC, leap seconds
+    excluded. As well as improved entropy characteristics over versions
+    1 or 6.
 
     Implementations SHOULD utilize UUID version 7 over UUID version 1 and
     6 if possible."""
@@ -137,8 +137,8 @@ def uuid7() -> UUID:
 def uuid8() -> UUID:
     r"""UUID version 8 features a time-ordered value field derived from the
     widely implemented and well known Unix Epoch timestamp source, the
-    number of nanoseconds seconds since midnight 1 Jan 1970 UTC, leap
-    seconds excluded."""
+    number of nanoseconds since midnight 1 Jan 1970 UTC, leap seconds
+    excluded."""
 
     global _last_v8_timestamp
 
