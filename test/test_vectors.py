@@ -23,10 +23,7 @@ class TestVectors(unittest.TestCase):
 
     def test_uuid7_from_int(self):
         uuid_int = (
-            0x17F22E279B0 << 80
-            | 0xCC3 << 64
-            | int("01", 2) << 60
-            | 0x8C4DC0C0C07398F
+            0x17F22E279B0 << 80 | 0xCC3 << 64 | int("01", 2) << 60 | 0x8C4DC0C0C07398F
         )
         uuid_7 = UUID(int=uuid_int, version=7)
         self.assertEqual(str(uuid_7), "017f22e2-79b0-7cc3-98c4-dc0c0c07398f")
