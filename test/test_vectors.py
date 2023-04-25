@@ -94,6 +94,8 @@ class TestVectors7(unittest.TestCase):
 
 class TestVectors8(unittest.TestCase):
     """
+    THESE ARE NOT FROM THE OFFICIAL DOCUMENTATION
+
     The timestamp is Tuesday, February 22, 2022 2:22:22.222222222 PM GMT-05:00
     represented as 0x16D6320C4A8CA38E or 1645557742222222222
 
