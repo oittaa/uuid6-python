@@ -33,8 +33,10 @@ setup(
         "uuid",
         "uuid6",
         "uuid7",
+        "uuid8",
         "uuidv6",
         "uuidv7",
+        "uuidv8",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
