@@ -92,11 +92,13 @@ _last_v7_timestamp = None
 _last_v8_timestamp = None
 
 
-def uuid6(clock_seq: Optional[int] = None) -> UUID:
+def uuid6(node: Optional[int] = None, clock_seq: Optional[int] = None) -> UUID:
     r"""UUID version 6 is a field-compatible version of UUIDv1, reordered for
     improved DB locality. It is expected that UUIDv6 will primarily be
     used in contexts where there are existing v1 UUIDs. Systems that do
     not involve legacy UUIDv1 SHOULD consider using UUIDv7 instead.
+
+    If 'node' is not given, a random 48-bit number is chosen.
 
     If 'clock_seq' is given, it is used as the sequence number;
     otherwise a random 14-bit sequence number is chosen."""
@@ -112,12 +114,14 @@ def uuid6(clock_seq: Optional[int] = None) -> UUID:
     _last_v6_timestamp = timestamp
     if clock_seq is None:
         clock_seq = secrets.randbits(14)  # instead of stable storage
+    if node is None:
+        node = secrets.randbits(48)
     time_high_and_time_mid = (timestamp >> 12) & 0xFFFFFFFFFFFF
     time_low_and_version = timestamp & 0x0FFF
     uuid_int = time_high_and_time_mid << 80
     uuid_int |= time_low_and_version << 64
     uuid_int |= (clock_seq & 0x3FFF) << 48
-    uuid_int |= secrets.randbits(48)
+    uuid_int |= node & 0xFFFFFFFFFFFF
     return UUID(int=uuid_int, version=6)
 
 

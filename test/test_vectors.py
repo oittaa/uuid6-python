@@ -44,10 +44,9 @@ class TestVectors6(unittest.TestCase):
         self.assertEqual(str(uuid_6), "1ec9414c-232a-6b00-b3c8-9e6bdeced846")
 
     @patch("uuid6._last_v6_timestamp", 1)
-    @patch("secrets.randbits", return_value=0x9E6BDECED846)
     @patch("time.time_ns", return_value=0x16D6320C3D4DCC00)
-    def test_uuid6_hex_from_time(self, mocktime, mockrand):
-        uuid_6 = uuid6(0x3C8 | int("11", 2) << 12)
+    def test_uuid6_hex_from_time(self, mocktime):
+        uuid_6 = uuid6(node=0x9E6BDECED846, clock_seq=0x3C8 | int("11", 2) << 12)
         self.assertEqual(str(uuid_6), "1ec9414c-232a-6b00-b3c8-9e6bdeced846")
 
     def test_uuid6_time_from_hex(self):
