@@ -18,19 +18,24 @@ pip install uuid6
 ## Usage
 
 ```python
-from uuid6 import uuid6, uuid7, uuid8
+import uuid6
 
-my_uuid = uuid6()
+my_uuid = uuid6.uuid6()
 print(my_uuid)
-assert my_uuid < uuid6()
+assert my_uuid < uuid6.uuid6()
 
-my_uuid = uuid7()
+my_uuid = uuid6.uuid7()
 print(my_uuid)
-assert my_uuid < uuid7()
+assert my_uuid < uuid6.uuid7()
 
-my_uuid = uuid8()
+my_uuid = uuid6.uuid8()
 print(my_uuid)
-assert my_uuid < uuid8()
+assert my_uuid < uuid6.uuid8()
+
+import uuid
+
+my_uuid = uuid.UUID(hex="C232AB00-9414-11EC-B3C8-9E6BDECED846")
+assert uuid6.uuid1_to_uuid6(my_uuid) == uuid.UUID(hex="1EC9414C-232A-6B00-B3C8-9E6BDECED846")
 ```
 
 ## Which UUID version should I use?
@@ -40,6 +45,24 @@ assert my_uuid < uuid8()
 UUID version 7 features a time-ordered value field derived from the widely implemented and well known Unix Epoch timestamp source, the number of milliseconds since midnight 1 Jan 1970 UTC, leap seconds excluded. As well as improved entropy characteristics over versions 1 or 6.
 
 If your use case requires greater granularity than UUID version 7 can provide, you might consider UUID version 8. UUID version 8 doesn't provide as good entropy characteristics as UUID version 7, but it utilizes timestamp with nanosecond level of precision.
+
+## Functions
+
+### uuid6.uuid1_to_uuid6(*uuid1*)
+
+Generate a UUID version 6 object from a UUID version 1 object.
+
+### uuid6.uuid6(*clock_seq=None*)
+
+Generate a UUID from a random number, sequence number, and the current time. If *clock_seq* is given, it is used as the sequence number; otherwise a random 14-bit sequence number is chosen.
+
+### uuid6.uuid7()
+
+Generate a UUID from a random number, and the current time.
+
+### uuid6.uuid8()
+
+Generate a UUID from a random number, and the current time.
 
 ## UUID Version 6
 

@@ -10,7 +10,7 @@ Unix_64_bit_ns = 0x16D6320C3D4DCC00 or 1645557742000000000
 import unittest
 from unittest.mock import patch
 
-from uuid6 import UUID, uuid6, uuid7, uuid8
+from uuid6 import UUID, uuid6, uuid7, uuid8, uuid1_to_uuid6
 
 
 class TestVectors6(unittest.TestCase):
@@ -55,6 +55,11 @@ class TestVectors6(unittest.TestCase):
         self.assertEqual(uuid_6.time, 138648505420000000)
         uuid_1 = UUID(hex="C232AB00-9414-11EC-B3C8-9E6BDECED846")
         self.assertEqual(uuid_6.time, uuid_1.time)
+
+    def test_uuid1_to_uuid6(self):
+        uuid_1 = UUID(hex="C232AB00-9414-11EC-B3C8-9E6BDECED846")
+        uuid_6 = uuid1_to_uuid6(uuid_1)
+        self.assertEqual(str(uuid_6), "1ec9414c-232a-6b00-b3c8-9e6bdeced846")
 
 
 class TestVectors7(unittest.TestCase):
