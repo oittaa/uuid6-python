@@ -78,6 +78,20 @@ def _subsec_encode(value: int) -> int:
     return value * 2**20 // 10**6
 
 
+def uuid1_to_uuid6(uuid1: uuid.UUID) -> UUID:
+    r"""Generate a UUID version 6 object from a UUID version 1 object."""
+    if uuid1.version != 1:
+        raise ValueError("given UUID's version number must be 1")
+    timestamp = uuid1.time
+    time_high_and_time_mid = timestamp >> 12
+    time_low_and_version = timestamp & 0x0FFF
+    uuid_int = time_high_and_time_mid << 80
+    uuid_int |= time_low_and_version << 64
+    uuid_int |= uuid1.clock_seq << 48
+    uuid_int |= uuid1.node
+    return UUID(int=uuid_int, version=6, is_safe=uuid1.is_safe)
+
+
 _last_v6_timestamp = None
 _last_v7_timestamp = None
 _last_v8_timestamp = None

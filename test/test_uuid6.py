@@ -3,7 +3,7 @@ from time import time_ns
 from unittest.mock import patch
 from uuid import uuid1
 
-from uuid6 import UUID, uuid6, uuid7, uuid8
+from uuid6 import UUID, uuid6, uuid7, uuid8, uuid1_to_uuid6
 
 REGEX_UUID6 = r"^[0-9a-f]{8}-[0-9a-f]{4}-6[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
 REGEX_UUID7 = r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
@@ -38,6 +38,19 @@ class UUIDTests(unittest.TestCase):
             uuid8_2 = uuid8()
             self.assertLess(uuid8_1, uuid8_2)
             uuid8_1 = uuid8_2
+
+    def test_uuid1_to_uuid6_generation(self):
+        uuid6_1 = None
+        for _ in range(1000):
+            uuid_1 = uuid1()
+            uuid6_2 = uuid1_to_uuid6(uuid_1)
+            self.assertEqual(uuid6_2.version, 6)
+            self.assertEqual(uuid6_2.node, uuid_1.node)
+            self.assertEqual(uuid6_2.clock_seq, uuid_1.clock_seq)
+            self.assertEqual(uuid6_2.time, uuid_1.time)
+            if uuid6_1 is not None:
+                self.assertLess(uuid6_1, uuid6_2)
+            uuid6_1 = uuid6_2
 
     def test_invalid_int(self):
         with self.assertRaises(ValueError):
@@ -154,6 +167,10 @@ class UUIDTests(unittest.TestCase):
     def test_multiple_arguments(self):
         with self.assertRaises(TypeError):
             _ = UUID(int=0, hex="061d0edc-bea0-75cc-9892-f6295fd7d295")
+
+    def test_convert_invalid_version(self):
+        with self.assertRaises(ValueError):
+            _ = uuid1_to_uuid6(uuid7())
 
 
 if __name__ == "__main__":
