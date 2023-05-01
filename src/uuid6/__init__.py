@@ -82,14 +82,9 @@ def uuid1_to_uuid6(uuid1: uuid.UUID) -> UUID:
     r"""Generate a UUID version 6 object from a UUID version 1 object."""
     if uuid1.version != 1:
         raise ValueError("given UUID's version number must be 1")
-    timestamp = uuid1.time
-    time_high_and_time_mid = timestamp >> 12
-    time_low_and_version = timestamp & 0x0FFF
-    uuid_int = time_high_and_time_mid << 80
-    uuid_int |= time_low_and_version << 64
-    uuid_int |= uuid1.clock_seq << 48
-    uuid_int |= uuid1.node
-    return UUID(int=uuid_int, version=6, is_safe=uuid1.is_safe)
+    h = uuid1.hex
+    h = h[13:16] + h[8:12] + h[0:5] + "6" + h[5:8] + h[16:]
+    return UUID(hex=h, is_safe=uuid1.is_safe)
 
 
 _last_v6_timestamp = None
