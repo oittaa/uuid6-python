@@ -52,9 +52,9 @@ If your use case requires greater granularity than UUID version 7 can provide, y
 
 Generate a UUID version 6 object from a UUID version 1 object.
 
-### uuid6.uuid6(*clock_seq=None*)
+### uuid6.uuid6(*node=None*, *clock_seq=None*)
 
-Generate a UUID from a random number, sequence number, and the current time. If *clock_seq* is given, it is used as the sequence number; otherwise a random 14-bit sequence number is chosen.
+Generate a UUID from a host ID, sequence number, and the current time. If *node* is not given, a random 48-bit number is chosen. If *clock_seq* is given, it is used as the sequence number; otherwise a random 14-bit sequence number is chosen.
 
 ### uuid6.uuid7()
 
