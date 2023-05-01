@@ -41,7 +41,11 @@ UUID version 7 features a time-ordered value field derived from the widely imple
 
 If your use case requires greater granularity than UUID version 7 can provide, you might consider UUID version 8. UUID version 8 doesn't provide as good entropy characteristics as UUID version 7, but it utilizes timestamp with nanosecond level of precision.
 
-## UUIDv6 Field and Bit Layout
+## UUID Version 6
+
+UUID version 6 is a field-compatible version of UUIDv1, reordered for improved DB locality. It is expected that UUIDv6 will primarily be used in contexts where there are existing v1 UUIDs. Systems that do not involve legacy UUIDv1 **SHOULD** use UUIDv7 instead.
+
+### UUIDv6 Field and Bit Layout
 
 ```
         0                   1                   2                   3
@@ -49,15 +53,19 @@ If your use case requires greater granularity than UUID version 7 can provide, y
         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
         |                           time_high                           |
         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-        |           time_mid            |      time_low_and_version     |
+        |           time_mid            |  ver  |       time_low        |
         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-        |clk_seq_hi_res |  clk_seq_low  |         node (0-1)            |
+        |var|         clock_seq         |             node              |
         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-        |                         node (2-5)                            |
+        |                              node                             |
         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-## UUIDv7 Field and Bit Layout
+## UUID Version 7
+
+UUID version 7 features a time-ordered value field derived from the widely implemented and well known Unix Epoch timestamp source, the number of milliseconds seconds since midnight 1 Jan 1970 UTC, leap seconds excluded. UUID version 7 also has improved entropy characteristics over versions 1 or 6.
+
+### UUIDv7 Field and Bit Layout
 
 ```
         0                   1                   2                   3
@@ -73,7 +81,13 @@ If your use case requires greater granularity than UUID version 7 can provide, y
         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-## UUIDv8 Field and Bit Layout
+## UUID Version 8
+
+UUID version 8 provides an RFC-compatible format for experimental or vendor-specific use cases.
+
+This implementation of `uuid8()` sacrifices some entropy for granularity compared to `uuid7()`, while being otherwise compatible.
+
+### UUIDv8 Field and Bit Layout
 
 ```
         0                   1                   2                   3
