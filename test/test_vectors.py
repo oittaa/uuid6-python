@@ -6,7 +6,6 @@ Unix NS: Tuesday, February 22, 2022 2:22:22 PM GMT-05:00
 Unix_64_bit_ns = 0x16D6320C3D4DCC00 or 1645557742000000000
 """
 
-
 import unittest
 from unittest.mock import patch
 
