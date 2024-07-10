@@ -7,7 +7,7 @@ New time-based UUID formats which are suited for use as a database key.
 [![Python versions supported](https://img.shields.io/pypi/pyversions/uuid6.svg?logo=python)](https://pypi.org/project/uuid6/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-This module extends immutable UUID objects (the UUID class) with the functions `uuid6()`, `uuid7()`, and `uuid8()` from [the IETF draft][draft repository].
+This module extends immutable UUID objects (the UUID class) with the functions `uuid6()`, `uuid7()`, and `uuid8()` from the proposed [IETF RFC 9562][rfc9562].
 
 ## Install
 
@@ -156,6 +156,6 @@ Mean +- std dev: 1.78 us +- 0.02 us
 +-----------+--------+-----------------------+-----------------------+-----------------------+-----------------------+
 ```
 
-[draft repository]: https://github.com/ietf-wg-uuidrev/rfc4122bis
+[rfc9562]: https://datatracker.ietf.org/doc/rfc9562/
 [python randbits]: https://docs.python.org/3/library/secrets.html#secrets.randbits
 [bench]: https://github.com/oittaa/uuid6-python/blob/main/bench.sh

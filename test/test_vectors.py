@@ -1,5 +1,5 @@
 """
-https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-14#appendix-A
+https://www.rfc-editor.org/rfc/rfc9562.html#name-test-vectors
 
 Unix 64 bit Nanosecond Timestamp:
 Unix NS: Tuesday, February 22, 2022 2:22:22 PM GMT-05:00
