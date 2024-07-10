@@ -1,7 +1,7 @@
-r"""UUID draft version objects (universally unique identifiers).
+r"""UUID objects (universally unique identifiers) according to RFC 9562.
+
 This module provides the functions uuid6(), uuid7(), and uuid8() for
-generating version 6, 7, and 8 UUIDs as specified in
-https://github.com/ietf-wg-uuidrev/rfc4122bis
+generating version 6, 7, and 8 UUIDs as specified in RFC 9562.
 """
 
 import secrets
@@ -11,7 +11,7 @@ from typing import Optional, Tuple
 
 
 class UUID(uuid.UUID):
-    r"""UUID draft version objects"""
+    r"""Instances of the UUID class represent UUIDs as specified in RFC 9562."""
 
     __slots__ = ()
 
