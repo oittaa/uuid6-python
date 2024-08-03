@@ -54,15 +54,15 @@ Generate a UUID version 6 object from a UUID version 1 object.
 
 ### uuid6.uuid6(*node=None*, *clock_seq=None*)
 
-Generate a UUID from a host ID, sequence number, and the current time. If *node* is not given, a random 48-bit number is chosen. If *clock_seq* is given, it is used as the sequence number; otherwise a random 14-bit sequence number is chosen.
+Generate a UUID from a host ID, sequence number, and the current time. If *node* is not given, a random 48-bit number is chosen. If *clock_seq* is given, it is used as the sequence number; otherwise a random 14-bit sequence number is chosen. This function is *not* thread-safe.
 
 ### uuid6.uuid7()
 
-Generate a UUID from a random number, and the current time.
+Generate a UUID from a random number, and the current time. This function is *not* thread-safe.
 
 ### uuid6.uuid8()
 
-Generate a UUID from a random number, and the current time.
+Generate a UUID from a random number, and the current time. This function is *not* thread-safe.
 
 ## UUID Version 6
 
@@ -84,6 +84,8 @@ UUID version 6 is a field-compatible version of UUIDv1, reordered for improved D
         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
+The `time_high`, `time_mid`, and `time_low` fields guarantee the order of UUIDs generated within the same timestamp by monotonically incrementing the timer.
+
 ## UUID Version 7
 
 UUID version 7 features a time-ordered value field derived from the widely implemented and well known Unix Epoch timestamp source, the number of milliseconds seconds since midnight 1 Jan 1970 UTC, leap seconds excluded. UUID version 7 also has improved entropy characteristics over versions 1 or 6.
@@ -103,6 +105,8 @@ UUID version 7 features a time-ordered value field derived from the widely imple
         |                            rand_b                             |
         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
+
+The `unix_ts_ms` field guarantees the order of UUIDs generated within the same millisecond by monotonically incrementing the timer.
 
 ## UUID Version 8
 
@@ -133,7 +137,7 @@ This implementation of `uuid8()` sacrifices some entropy for granularity compare
 - `subsec_b`: 8 bits allocated to sub-second precision values
 - `rand`: The remaining 54 bits are filled with [cryptographically strong random data][python randbits]
 
- 20 extra bits dedicated to sub-second precision provide nanosecond resolution. The `unix_ts_ms`, `subsec_a`,  and `subsec_b` fields guarantee the order of UUIDs generated within the same nanosecond by monotonically incrementing the timer.
+20 extra bits dedicated to sub-second precision provide nanosecond resolution. The `unix_ts_ms`, `subsec_a`, and `subsec_b` fields guarantee the order of UUIDs generated within the same nanosecond by monotonically incrementing the timer.
 
 ## Performance
 
