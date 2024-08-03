@@ -147,16 +147,16 @@ Run the shell script [bench.sh][bench] to test on your own machine.
 
 MacBook Air 2020
 ```
-Python 3.10.4
-Mean +- std dev: 870 ns +- 11 ns
-Mean +- std dev: 1.17 us +- 0.01 us
+Python 3.12.4
+Mean +- std dev: 899 ns +- 8 ns
+Mean +- std dev: 1.22 us +- 0.01 us
 Mean +- std dev: 2.18 us +- 0.02 us
-Mean +- std dev: 1.60 us +- 0.02 us
-Mean +- std dev: 1.78 us +- 0.02 us
+Mean +- std dev: 1.54 us +- 0.01 us
+Mean +- std dev: 1.73 us +- 0.01 us
 +-----------+--------+-----------------------+-----------------------+-----------------------+-----------------------+
 | Benchmark | uuid1  | uuid4                 | uuid6                 | uuid7                 | uuid8                 |
 +===========+========+=======================+=======================+=======================+=======================+
-| timeit    | 870 ns | 1.17 us: 1.35x slower | 2.18 us: 2.51x slower | 1.60 us: 1.84x slower | 1.78 us: 2.04x slower |
+| timeit    | 899 ns | 1.22 us: 1.36x slower | 2.18 us: 2.43x slower | 1.54 us: 1.71x slower | 1.73 us: 1.92x slower |
 +-----------+--------+-----------------------+-----------------------+-----------------------+-----------------------+
 ```
 
