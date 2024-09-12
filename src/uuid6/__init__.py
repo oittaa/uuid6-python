@@ -125,7 +125,7 @@ def uuid6(node: Optional[int] = None, clock_seq: Optional[int] = None) -> UUID:
     return UUID(int=uuid_int, version=6)
 
 
-def uuid7() -> UUID:
+def uuid7(at_ts_ms = None) -> UUID:
     r"""UUID version 7 features a time-ordered value field derived from the
     widely implemented and well known Unix Epoch timestamp source, the
     number of milliseconds since midnight 1 Jan 1970 UTC, leap seconds
@@ -137,11 +137,14 @@ def uuid7() -> UUID:
 
     global _last_v7_timestamp
 
-    nanoseconds = time.time_ns()
-    timestamp_ms = nanoseconds // 10**6
-    if _last_v7_timestamp is not None and timestamp_ms <= _last_v7_timestamp:
-        timestamp_ms = _last_v7_timestamp + 1
-    _last_v7_timestamp = timestamp_ms
+    if at_ts_ms is None:
+        nanoseconds = time.time_ns()
+        timestamp_ms = nanoseconds // 10**6
+        if _last_v7_timestamp is not None and timestamp_ms <= _last_v7_timestamp:
+            timestamp_ms = _last_v7_timestamp + 1
+        _last_v7_timestamp = timestamp_ms
+    else:
+        timestamp_ms = at_ts_ms
     uuid_int = (timestamp_ms & 0xFFFFFFFFFFFF) << 80
     uuid_int |= secrets.randbits(76)
     return UUID(int=uuid_int, version=7)
