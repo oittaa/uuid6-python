@@ -51,6 +51,6 @@ jobs:
       - name: Benchmark
         run: ./bench.sh
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           flags: unittests
