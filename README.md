@@ -38,6 +38,42 @@ my_uuid = uuid.UUID(hex="C232AB00-9414-11EC-B3C8-9E6BDECED846")
 assert uuid6.uuid1_to_uuid6(my_uuid) == uuid.UUID(hex="1EC9414C-232A-6B00-B3C8-9E6BDECED846")
 ```
 
+# Versioning
+
+> **Important Notice:** Starting with version `2025.0.0`, this project will transition from Calendar Versioning (YYYY.MM.DD) to Semantic Versioning (MAJOR.MINOR.PATCH).
+
+### Version Scheme
+
+- **Before 2025.0.0**: Calendar Versioning (e.g., `2024.07.10`)
+- **2025.0.0 and after**: Semantic Versioning where:
+  - **MAJOR**: Breaking changes
+  - **MINOR**: New features (backward compatible)
+  - **PATCH**: Bug fixes (backward compatible)
+
+### For Dependency Management
+
+- Requirements like `>=2024.07.10` will continue to work with newer versions
+- For the latest features, specify `>=2025.0.0`
+
+### Release Process
+
+Version numbers are managed automatically via Git tags.
+
+1. Maintainers create a new tag following the version scheme:
+   ```bash
+   git tag <version>
+   git tag 2025.0.0   # First SemVer release
+   git tag 2025.1.0   # Feature release
+   git tag 2025.0.1   # Bug fix release
+   ```
+
+2. Push the tag to GitHub
+   ```bash
+   git push origin <version>
+   ```
+
+3. GitHub Actions will build and publish the package to PyPI
+
 ## Which UUID version should I use?
 
 > Implementations SHOULD utilize UUID version 7 over UUID version 1 and 6 if possible.

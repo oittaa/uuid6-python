@@ -10,15 +10,18 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Set up Python 3.x
       uses: actions/setup-python@v5
       with:
         python-version: '3.x'
-    - name: Install pypa/build
+    - name: Install dependencies
       run: >-
         python -m
         pip install
         build
+        setuptools_scm
         --user
     - name: Build a binary wheel and a source tarball
       run: >-
