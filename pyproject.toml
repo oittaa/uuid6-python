@@ -1,5 +1,6 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [tool.coverage.run]
 branch = true
@@ -7,3 +8,51 @@ source = ["src/"]
 
 [tool.mypy]
 files = ["*.py", "test/", "src/"]
+
+[project]
+name = "uuid6"
+dynamic = ["version"]
+description = "New time-based UUID formats which are suited for use as a database key"
+readme = "README.md"
+authors = [
+    {name = "Oittaa"}
+]
+requires-python = ">=3.9"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+keywords = [
+    "uuid",
+    "uuid6",
+    "uuid7",
+    "uuid8",
+    "uuidv6",
+    "uuidv7",
+    "uuidv8",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/oittaa/uuid6-python"
+"Bug Tracker" = "https://github.com/oittaa/uuid6-python/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
+[tool.setuptools_scm]
