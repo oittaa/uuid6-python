@@ -31,7 +31,7 @@ class UUID(uuid.UUID):
         int: Optional[int] = None,
         version: Optional[int] = None,
         *,
-        is_safe: uuid.SafeUUID = uuid.SafeUUID.unknown
+        is_safe: uuid.SafeUUID = uuid.SafeUUID.unknown,
     ) -> None:
         r"""Create a UUID."""
 
