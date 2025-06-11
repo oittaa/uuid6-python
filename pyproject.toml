@@ -7,7 +7,7 @@ branch = true
 source = ["src/"]
 
 [tool.mypy]
-files = ["*.py", "test/", "src/"]
+files = ["test/", "src/"]
 
 [project]
 name = "uuid6"
