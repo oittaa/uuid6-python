@@ -9,6 +9,9 @@ New time-based UUID formats which are suited for use as a database key.
 
 This module extends immutable UUID objects (the UUID class) with the functions `uuid6()`, `uuid7()`, and `uuid8()` from the proposed [IETF RFC 9562][rfc9562].
 
+## NOTICE
+[Python 3.14][py314-uuid] added support for UUID versions 6, 7, and 8 via uuid6(), uuid7(), and uuid8() respectively, as specified in RFC 9562. 
+
 ## Install
 
 ```shell
@@ -199,3 +202,4 @@ Mean +- std dev: 1.73 us +- 0.01 us
 [rfc9562]: https://datatracker.ietf.org/doc/rfc9562/
 [python randbits]: https://docs.python.org/3/library/secrets.html#secrets.randbits
 [bench]: https://github.com/oittaa/uuid6-python/blob/main/bench.sh
+[py314-uuid]: https://docs.python.org/3/whatsnew/3.14.html#uuid
