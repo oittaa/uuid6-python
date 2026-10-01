@@ -1,5 +1,4 @@
 import unittest
-from time import time_ns
 from unittest.mock import patch
 from uuid import uuid1
 
@@ -138,15 +137,21 @@ class UUIDTests(unittest.TestCase):
                 self.assertLess(uuid_prev, uuid_cur)
                 uuid_prev = uuid_cur
 
-    def test_time(self):
-        uuid_1 = uuid1()
+    @patch("uuid6._last_v6_timestamp", None)
+    @patch("uuid6._last_v7_timestamp", None)
+    @patch("uuid6._last_v8_timestamp", None)
+    @patch("uuid6.time.time_ns", return_value=1_700_000_000_000_000_000)
+    def test_time(self, mocktime):
+        nanoseconds = mocktime.return_value
+
         uuid_6 = uuid6()
-        self.assertAlmostEqual(uuid_6.time / 10**7, uuid_1.time / 10**7, 3)
-        cur_time = time_ns()
+        self.assertEqual(uuid_6.time, nanoseconds // 100 + 0x01B21DD213814000)
+
         uuid_7 = uuid7()
-        self.assertAlmostEqual(uuid_7.time / 10**3, cur_time / 10**9, 2)
+        self.assertEqual(uuid_7.time, nanoseconds // 10**6)
+
         uuid_8 = uuid8()
-        self.assertAlmostEqual(uuid_8.time / 10**9, cur_time / 10**9, 3)
+        self.assertEqual(uuid_8.time, nanoseconds)
 
     def test_zero_time(self):
         uuid_6 = UUID(hex="00000000-0000-6000-8000-000000000000")
